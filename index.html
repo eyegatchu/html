@@ -5,103 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eyegatchuu</title>
     <style>
-        /* CSS styling */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header, nav, main, footer {
-            padding: 20px;
-            background-color: #070707;
-        }
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        nav ul li {
-            display: inline;
-            margin-right: 10px;
-        }
-        footer {
-            position:fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #ffffff;
-            background-image: url(backgrouund.jpg.jpg);
-            
-        }
-        header {
-            background-color: #000000;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        nav ul li {
-            display: inline;
-            margin-right: 10px;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 3px;
-            transition: background-color 0.3s ease;
-        }
-        nav ul li a:hover {
-            background-color: #000000;
-        }
-        main {
-            text-align: center;
-            margin-top: 20px;
-        }
-        section {
-            margin-bottom: 40px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        article {
-            margin-bottom: 20px;
-        }
-        footer {
-            background-color: #000000;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-        }
-        footer p {
-            margin: 0;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        img:hover {
-            transform: scale(1.1);
-        }
+       /* CSS styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #000000;
+    background-image: url("bg.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+header {
+    padding: 10px; /* Mengurangi padding header */
+}
+
+h1 , h2{
+    text-align: center;
+}
+nav {
+
+    text-align: center;
+    width: 100%;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black; /* Mengganti warna teks menjadi putih */
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+footer {
+    padding: 10px 20px; /* Mengurangi padding footer */
+}
+
+#comments {
+    text-align: left;
+    margin: 20px auto;
+    width: 60%; /* Mengurangi lebar kolom komentar */
+}
+
+#comments textarea {
+    width: 100%;
+    height: 80px; /* Mengurangi tinggi kolom komentar */
+    margin-bottom: 10px;
+}
+
+#comment-list {
+    text-align: left;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    max-width: 55%; /* Mengurangi lebar daftar komentar */
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Times New Roman', Times, serif;
+
+}
+
+#comment-list p {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
     </style>
 </head>
 <body>
@@ -118,10 +99,66 @@
     </nav>
     <main>
         <h2>Home</h2>
-        <p>Website baru jadi masih cupu, hehehe.</p>
+        <section>
+            <div id="comments">
+                <textarea id="comment-input" placeholder="Add your comment"></textarea><br>
+                <button onclick="saveComment()">Save Comment</button>
+            </div>
+            <div id="comment-list">
+                <!-- Comments will be displayed here -->
+            </div>
+        </section>
     </main>
     <footer>
         <p>&copy; 2024 My Website. All rights reserved.</p>
     </footer>
+
+    <script>
+        // JavaScript for saving and displaying comments
+        function saveComment() {
+            // Get the comment input value
+            var comment = document.getElementById("comment-input").value;
+            if (comment.trim() === "") {
+                alert("Please enter a comment!");
+                return;
+            }
+
+            // Get the existing comments from localStorage
+            var comments = JSON.parse(localStorage.getItem("comments")) || [];
+
+            // Add the new comment to the array
+            comments.push(comment);
+
+            // Save the updated comments back to localStorage
+            localStorage.setItem("comments", JSON.stringify(comments));
+
+            // Clear the comment input field
+            document.getElementById("comment-input").value = "";
+
+            // Display the comments
+            displayComments();
+        }
+
+        function displayComments() {
+            // Get the comment list element
+            var commentList = document.getElementById("comment-list");
+
+            // Get the comments from localStorage
+            var comments = JSON.parse(localStorage.getItem("comments")) || [];
+
+            // Clear the previous comments
+            commentList.innerHTML = "";
+
+            // Display each comment
+            comments.forEach(function(comment) {
+                var commentItem = document.createElement("p");
+                commentItem.textContent = comment;
+                commentList.appendChild(commentItem);
+            });
+        }
+
+        // Display comments when the page loads
+        displayComments();
+    </script>
 </body>
 </html>
